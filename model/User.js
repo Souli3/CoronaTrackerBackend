@@ -1,28 +1,36 @@
 "strict mode";
 const bcrypt = require("bcrypt");
+const { connect } = require("http2");
 const saltRounds = 10;
 const myPlaintextPassword = "145OkyayNo668Pass";
 const FILE_PATH = __dirname + "/users.json";
 
 class User {
-  constructor(username, email, password) {
+  constructor(username, email, password ,name ,fname ,confpassword) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.name = name;
+    this.fname =fname;
+    this.confpassword = confpassword;
   }
 
   /* return a promise with async / await */ 
   async save() {
     let userList = getUserListFromFile(FILE_PATH);
     const hashedPassword = await bcrypt.hash(this.password, saltRounds);
-    console.log("save:", this.email);
+    
+
+    console.log("save:", this.email,this.name,this.fname );
     userList.push({
       username: this.email,
       email: this.email,
+      name:  this.name ,
+      fname: this.fname ,
       password: hashedPassword,
     });
     saveUserListToFile(FILE_PATH, userList);
-    return true;
+      return true;
   }
 
   /* return a promise with classic promise syntax*/
@@ -82,6 +90,18 @@ class User {
     }
     return;
   }
+  static deleteUserFromList(username) {
+    let userList = getUserListFromFile(FILE_PATH);
+    for (let index = 0; index < userList.length; index++) {
+
+      if (userList[index].username === username) {
+        delete userList[index];
+      saveUserListToFile(FILE_PATH ,userList);
+      }
+    }
+    return;
+  }
+
 }
 
 function getUserListFromFile(filePath) {
@@ -96,8 +116,10 @@ function getUserListFromFile(filePath) {
 
 function saveUserListToFile(filePath, userList) {
   const fs = require("fs");
-  let data = JSON.stringify(userList);
+  let data = userList.filter(element => { return element !== null});
+   data = JSON.stringify(data);
   fs.writeFileSync(filePath, data);
+  
 }
 
 module.exports = User;
