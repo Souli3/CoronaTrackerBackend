@@ -38,7 +38,9 @@ router.post("/", function (req, res, next) {
   console.log("email:", req.body.email);
   if (User.isUser(req.body.email))
     return res.status(409).end();
-  let newUser = new User(req.body.email, req.body.email, req.body.password);
+    if ((req.body.password !== req.body.confpassword ))
+       return res.status(408).end();
+  let newUser = new User(req.body.email, req.body.email, req.body.password ,req.body.name ,req.body.fname);
   newUser.save().then(() => {
     console.log("afterRegisterOp:", User.list);
     jwt.sign({ username: newUser.username}, jwtSecret,{ expiresIn: LIFETIME_JWT }, (err, token) => {
@@ -47,7 +49,7 @@ router.post("/", function (req, res, next) {
         return res.status(500).send(err.message);
       }
       console.log("POST users/ token:", token);
-      return res.json({ username: newUser.username, token });
+      return res.json({  username: newUser.username, token });
     });
   });
 });
@@ -62,5 +64,14 @@ router.get("/:username", function (req, res, next) {
     return res.status(404).send("ressource not found");
   }
 });
+/* Delete user  */
+
+router.delete("/delete", function (req, res, next) {
+  console.log("DELETE users/:username", req.body.username);
+        User.deleteUserFromList(req.body.username);
+        console.log(User.list());
+
+        return res.json(req.body.username);
+      });
 
 module.exports = router;
