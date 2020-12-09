@@ -4,11 +4,11 @@ var User = require("../model/User.js");
 let { authorize, signAsynchronous } = require("../utils/auth");
 const jwt = require("jsonwebtoken");
 const jwtSecret = "jkjJ1235Ohno!";
-const LIFETIME_JWT = 24 * 60 * 60 * 1000 ; // 10;// in seconds // 24 * 60 * 60 * 1000 = 24h 
+const LIFETIME_JWT = 24 * 60 * 60 * 1000; // 10;// in seconds // 24 * 60 * 60 * 1000 = 24h 
 
 /* GET user list : secure the route with JWT authorization */
 router.get("/", authorize, function (req, res, next) {
-    return res.json(User.list);
+  return res.json(User.list);
 });
 
 /* POST user data for authentication */
@@ -17,7 +17,7 @@ router.post("/login", function (req, res, next) {
   console.log("POST users/login:", User.list);
   user.checkCredentials(req.body.email, req.body.password).then((match) => {
     if (match) {
-      jwt.sign({ username: user.username }, jwtSecret,{ expiresIn: LIFETIME_JWT }, (err, token) => {
+      jwt.sign({ username: user.username }, jwtSecret, { expiresIn: LIFETIME_JWT }, (err, token) => {
         if (err) {
           console.error("POST users/ :", err);
           return res.status(500).send(err.message);
@@ -29,7 +29,7 @@ router.post("/login", function (req, res, next) {
       console.log("POST users/login Error:", "Unauthentified");
       return res.status(401).send("bad email/password");
     }
-  })  
+  })
 });
 
 /* POST a new user */
@@ -38,18 +38,18 @@ router.post("/", function (req, res, next) {
   console.log("email:", req.body.email);
   if (User.isUser(req.body.email))
     return res.status(409).end();
-    if ((req.body.password !== req.body.confpassword ))
-       return res.status(408).end();
-  let newUser = new User(req.body.email, req.body.email, req.body.password ,req.body.name ,req.body.fname);
+  if ((req.body.password !== req.body.confpassword))
+    return res.status(408).end();
+  let newUser = new User(req.body.email, req.body.email, req.body.password, req.body.name, req.body.fname);
   newUser.save().then(() => {
     console.log("afterRegisterOp:", User.list);
-    jwt.sign({ username: newUser.username}, jwtSecret,{ expiresIn: LIFETIME_JWT }, (err, token) => {
+    jwt.sign({ username: newUser.username }, jwtSecret, { expiresIn: LIFETIME_JWT }, (err, token) => {
       if (err) {
         console.error("POST users/ :", err);
         return res.status(500).send(err.message);
       }
       console.log("POST users/ token:", token);
-      return res.json({  username: newUser.username, token });
+      return res.json({ username: newUser.username, token });
     });
   });
 });
@@ -68,10 +68,10 @@ router.get("/:username", function (req, res, next) {
 
 router.delete("/delete", function (req, res, next) {
   console.log("DELETE users/:username", req.body.username);
-        User.deleteUserFromList(req.body.username);
-        console.log(User.list());
+  User.deleteUserFromList(req.body.username);
+  console.log(User.list());
 
-        return res.json(req.body.username);
-      });
+  return res.json(req.body.username);
+});
 
 module.exports = router;
