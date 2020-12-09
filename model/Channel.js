@@ -8,17 +8,27 @@ class Channel{
 
 
     constructor(data){
+        
         this.id = Channel.getNewId();
         
         this.title = escape(data.title);
-        this.date= data.date;
+        //this.date= data.date;
         this.user=data.user;
         this.state=data.state;
         this.region=data.region;
-        this.subject =data.subject;
-        this.userId = data.id_user;
+        this.subject =escape(data.subject);
+        
+        
+        this.userId = "1";
 
 
+        var currentTime = new Date();
+        // retourne le mois 0-11 donc +1
+        var month = currentTime.getMonth() + 1;
+        var day = currentTime.getDate();
+        var year = currentTime.getFullYear();
+        
+        this.date=day+"-"+month+"-"+year;
     }
     static get list() {
         let channels = getChannelListFromFile();
@@ -30,10 +40,14 @@ class Channel{
         return channelList.find((channel) => channel.id==id);
     }
 
-    static save(){
+    save(){
+       
         let channelList = getChannelListFromFile();
+      
         channelList.push(this);
+     
         saveChannelListToFile(FILE_PATH, channelList);
+    
     }
 
 

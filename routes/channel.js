@@ -11,11 +11,24 @@ let Channel = require("../model/Channel.js");
 //    return res.json(Channel.getChannelListFromFile);
 //});
 
+
+router.post("/add", function(req,res){
+  console.log("j'enregistre le nv channel");
+  let newChannel = new Channel(req.body);
+  newChannel.save();
+  return res.json(newChannel);
+});
+
+
+
+
+
 router.post("/hcah", function(req,res, next){
     console.log("*", User);
 
 
 });
+
 
 
 router.post("/", function (req, res, next) {
@@ -24,6 +37,7 @@ router.post("/", function (req, res, next) {
   
 });
 
+ 
 
 
 module.exports = router;
