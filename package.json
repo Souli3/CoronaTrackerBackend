@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon ./bin/www",
+    "dev": "concurrently \"nodemon ./bin/www \" \"cd ../CoronaTrackerFrontend && npm start\"",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "http-errors": "~1.8.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.10.0",
+    "nodemon": "^2.0.6",
     "pug": "3.0.0"
   }
 }
