@@ -44,6 +44,25 @@ class Channel{
         let channelList = getChannelListFromFile();
         return channelList.find((channel) => channel.id == id);
     }
+    static search(titre, region){
+        let channelList = getChannelListFromFile();
+
+        let mychannels = [];
+
+        for (let index = 0; index < channelList.length; index++) {
+            if(titre!="*" && channelList[index].region === region && channelList[index].title.match(titre)){
+                mychannels.push(channelList[index]);
+            }
+
+          
+            
+        }
+        return mychannels;
+
+
+
+
+    }
 
     save(){
 

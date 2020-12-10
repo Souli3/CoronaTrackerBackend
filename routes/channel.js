@@ -3,8 +3,8 @@
 let express = require("express");
 let router = express.Router();
 let Channel = require("../model/Channel.js");
+const { authorize } = require("../utils/auth.js");
 
-let { authorize, signAsynchronous } = require("../utils/auth");
 
 
 //Renvoie tout la liste des channels/*
@@ -19,13 +19,19 @@ router.post("/", function(req, res, next) {
 
 });
 
-router.post("/add", authorize, function(req, res) {
+router.post("/add",  function(req, res) {
     console.log("j'enregistre le nv channel");
     let newChannel = new Channel(req.body);
     newChannel.save();
     return res.json(newChannel);
 });
 
+router.get("/:titre/:region", function(req,res, next){
+  console.log("test "+req.params.titre+" "+req.params.region);
+  const channelSearch = Channel.search(req.params.titre,req.params.region);
+  if (!channelSearch) return res.status(404).end();
+  return res.json(channelSearch);
+});
 
 
 router.post("/hcah", function(req, res, next) {

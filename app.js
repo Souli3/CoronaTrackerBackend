@@ -17,11 +17,11 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/channel", channelRouter);
+app.use("/api/channel",channelRouter);
 
 app.use("/api/users", usersRouter);
 
-// app.use("/api/films", authorize, filmRouter);
+//app.use("/api/films", authorize, channelRouter);
 
 app.use("/api/cases", casesRouter);
 // catch 404 and forward to error handler
