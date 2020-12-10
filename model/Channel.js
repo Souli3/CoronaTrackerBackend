@@ -51,7 +51,7 @@ class Channel{
         
         channelList.push(this);
         console.log(this.region);
-        updateRegion(this.region,"ouvert");
+        updateRegion(this.region,"ouvert",false);
         saveChannelListToFile(FILE_PATH, channelList);
     
     }
@@ -85,7 +85,7 @@ class Channel{
                 element.date=channel.date;
                 element.region=channel.region;
                 if("ferme"==channel.etat)
-                updateRegion(channel.region,"ferme")
+                updateRegion(channel.region,"ferme",false)
                 element.state=channel.etat;
             }
         });
@@ -97,7 +97,7 @@ class Channel{
         const index = channelList.findIndex((channelList) => channelList.id == id);
         if (index < 0) return;
         const itemRemoved = { ...channelList[index] };
-
+        updateRegion(itemRemoved.region,itemRemoved.state,true);
         channelList.splice(index, 1);
         saveChannelListToFile(FILE_PATH, channelList);
 
@@ -106,7 +106,7 @@ class Channel{
     }
 }
     
-function updateRegion(region,etat){
+function updateRegion(region,etat,del){
     console.log("eSQSAVE");
     let fs=require('fs');
     
@@ -116,8 +116,10 @@ function updateRegion(region,etat){
         for (let index = 0; index < data.length ;index++) {
             
             if(data[index].region==region){
-                console.log("eSQSAVE");
-             if(etat==="ouvert"){
+                if(del){
+                    data[index][etat]--;
+                }
+             else if(etat==="ouvert"){
                  data[index]["ouvert"]++;
             }
             else {data[index]["ferme"]++;
