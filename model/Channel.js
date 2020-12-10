@@ -89,9 +89,6 @@ class Channel{
         });
         saveChannelListToFile(FILE_PATH,list);
     }
-}
-    
-
     static delete(id) {
         let channelList = getChannelListFromFile(FILE_PATH);
         const index = channelList.findIndex((channelList) => channelList.id == id);
@@ -105,6 +102,9 @@ class Channel{
         return itemRemoved;
     }
 }
+    
+
+   
 
 // function getChannelListFromFileById(username) {
 //     console.log('dans getchannellistfromfilebyid');
