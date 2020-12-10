@@ -20,6 +20,7 @@ router.post("/add", function(req,res){
   console.log("j'enregistre le nv channel");
   let newChannel = new Channel(req.body);
   newChannel.save();
+  
   return res.json(newChannel);
 });
 
@@ -43,7 +44,6 @@ router.delete("/:id", function (req, res) {
 router.put("/",function(req,res,next){
   console.log('UPDATE channel');
   let channel=req.body.channel;
-  console.log(req.body.channel);
   Channel.updateChannel(req.body.channel);
 return res.json({ tableau: Channel.list});
 });

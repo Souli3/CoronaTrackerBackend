@@ -30,7 +30,7 @@ class Channel{
         var day = currentTime.getDate();
         var year = currentTime.getFullYear();
         
-        this.date=day+"-"+month+"-"+year;
+        this.date=year+"-"+month+"-"+day;
     }
 
     static get list() {
@@ -48,9 +48,10 @@ class Channel{
     save(){
 
         let channelList = getChannelListFromFile();
-      
+        
         channelList.push(this);
-     
+        console.log(this.region);
+        updateRegion(this.region,"ouvert");
         saveChannelListToFile(FILE_PATH, channelList);
     
     }
@@ -78,17 +79,19 @@ class Channel{
     static updateChannel(channel){
         let list= getChannelListFromFile();
         list.map(element => {
-            console.log(channel.id==element.id)
             if(element.id==channel.id){
                 element.subject=channel.sujet;
                 element.title=channel.title;
                 element.date=channel.date;
                 element.region=channel.region;
+                if("ferme"==channel.etat)
+                updateRegion(channel.region,"ferme")
                 element.state=channel.etat;
             }
         });
         saveChannelListToFile(FILE_PATH,list);
     }
+     
     static delete(id) {
         let channelList = getChannelListFromFile(FILE_PATH);
         const index = channelList.findIndex((channelList) => channelList.id == id);
@@ -103,7 +106,30 @@ class Channel{
     }
 }
     
-
+function updateRegion(region,etat){
+    console.log("eSQSAVE");
+    let fs=require('fs');
+    
+        let file=fs.readFileSync(__dirname+'/../data/cases.json');
+        let data = JSON.parse(file).board;
+       
+        for (let index = 0; index < data.length ;index++) {
+            
+            if(data[index].region==region){
+                console.log("eSQSAVE");
+             if(etat==="ouvert"){
+                 data[index]["ouvert"]++;
+            }
+            else {data[index]["ferme"]++;
+             data[index]["ouvert"]--;
+            }
+            }
+  }
+               
+  data=JSON.stringify(data).concat("}");
+  data="{\"board\":".concat(data);
+  fs.writeFileSync(__dirname+'/../data/cases.json',data)
+}
    
 
 // function getChannelListFromFileById(username) {
