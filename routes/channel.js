@@ -39,7 +39,21 @@ router.delete("/:id", function (req, res) {
   if (!channelDeleted) return res.status(404).end();
   return res.json(channelDeleted);
 });
-
+/// update channel 
+router.put("/",function(req,res,next){
+  console.log('UPDATE channel');
+  let channel=req.body.channel;
+  console.log(req.body.channel);
+  Channel.updateChannel(req.body.channel);
+return res.json({ tableau: Channel.list});
+});
+// get channel by Id 
+router.get("/:id", function(req,res, next){
+  console.log("get channel By Id ",req.params.id);
+  let channel=Channel.get(req.params.id);
+  
+return res.json({channel});
+});
 
 
 
