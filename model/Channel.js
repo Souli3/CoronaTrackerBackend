@@ -74,6 +74,21 @@ class Channel{
         if (channelList.length === 0) return 1;
         return channelList[channelList.length - 1].id + 1;
     }
+
+    static updateChannel(channel){
+        let list= getChannelListFromFile();
+        list.map(element => {
+            console.log(channel.id==element.id)
+            if(element.id==channel.id){
+                element.subject=channel.sujet;
+                element.title=channel.title;
+                element.date=channel.date;
+                element.region=channel.region;
+                element.state=channel.etat;
+            }
+        });
+        saveChannelListToFile(FILE_PATH,list);
+    }
     static delete(id) {
         let channelList = getChannelListFromFile(FILE_PATH);
         const index = channelList.findIndex((channelList) => channelList.id == id);
@@ -87,6 +102,9 @@ class Channel{
         return itemRemoved;
     }
 }
+    
+
+   
 
 // function getChannelListFromFileById(username) {
 //     console.log('dans getchannellistfromfilebyid');
