@@ -18,6 +18,7 @@ router.post("/", function(req, res, next) {
     return res.json({ tableau: Channel.list });
 
 });
+
 router.post("/add", authorize, function(req, res) {
     console.log("j'enregistre le nv channel");
     let newChannel = new Channel(req.body);
@@ -48,6 +49,7 @@ router.put("/", function(req, res, next) {
     console.log(req.body.channel);
     Channel.updateChannel(req.body.channel);
     return res.json({ tableau: Channel.list });
+
 });
 // get channel by Id 
 router.get("/:id", function(req, res, next) {
