@@ -1,1 +1,1 @@
-{"board":[{"region":"Bruxelles","ouvert":0,"ferme":1},{"region":"Mons","ouvert":0,"ferme":0},{"region":"Liege","ouvert":0,"ferme":0},{"region":"Namur","ouvert":1,"ferme":0},{"region":"Anvers","ouvert":1,"ferme":0},{"region":"Gand","ouvert":0,"ferme":0}]}
+{"board":[{"region":"Bruxelles","ouvert":0,"ferme":2},{"region":"Mons","ouvert":0,"ferme":0},{"region":"Liege","ouvert":0,"ferme":0},{"region":"Namur","ouvert":1,"ferme":1},{"region":"Anvers","ouvert":1,"ferme":0},{"region":"Gand","ouvert":0,"ferme":0}]}

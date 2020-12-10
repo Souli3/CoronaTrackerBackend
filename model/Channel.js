@@ -18,7 +18,7 @@ class Channel{
         this.state=data.state;
         this.region=data.region;
         this.subject =escape(data.subject);
-        
+        this.messages=[];
         
         this.userId = "1";
 
@@ -39,7 +39,23 @@ class Channel{
         console.log("er");
         return channels;
     }
-
+    static getMessages(id){
+        let channelList = getChannelListFromFile();
+        console.log("ere")
+        let messages=channelList.find((channel)=>(channel.id==id)).messages;
+        return messages;
+    }
+    static saveMessage(idChannel,text,user){
+        console.log("saving message");
+        let channelList = getChannelListFromFile();
+         channelList.map((channel) =>{if( channel.id == idChannel)channel.messages.push({"message":text,"username":user})});
+         console.log("after");
+        saveChannelListToFile(FILE_PATH,channelList);
+             
+      /*   console.log(this.get(idChannel).messages)
+        (this.get(idChannel)).messages.push({message:text,user:user}) */
+        
+    }
     static get(id) {
         let channelList = getChannelListFromFile();
         return channelList.find((channel) => channel.id == id);
