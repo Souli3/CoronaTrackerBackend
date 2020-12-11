@@ -19,7 +19,7 @@ router.post("/", function(req, res, next) {
 
 });
 
-router.post("/add", function(req, res) {
+router.put("/add", authorize, function(req, res) {
     console.log("j'enregistre le nv channel");
     let newChannel = new Channel(req.body);
     newChannel.save();
