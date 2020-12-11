@@ -58,6 +58,30 @@ router.get("/:id", function(req, res, next) {
 
     return res.json({ channel });
 });
+// add Message
+router.post("/addMessage", authorize, function(req, res, next) {
+    console.log("Send message " + req.body.message);
+    var idChannel=req.body.idChannel;
+    let message=req.body.message;
+    let user= req.body.user;
+    Channel.saveMessage(idChannel,message,user);
+    console.log("he")
+    console.log(Channel.getMessages(idChannel))
+   let  messages=Channel.getMessages(idChannel);
+   let owner=Channel.get(idChannel).user;
+   console.log(messages);
+    return res.json({messages,owner});
+
+});
+/// get Messages
+router.post("/allMessages", authorize, function(req, res, next) {
+    var idChannel=req.body.idChannel;
+   let  messages=Channel.getMessages(idChannel);
+   let owner=Channel.get(idChannel).user;
+   console.log(messages);
+    return res.json({messages,owner});
+
+});
 
 
 
