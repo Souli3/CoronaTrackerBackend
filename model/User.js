@@ -13,7 +13,7 @@ class User {
         this.name = name;
         this.fname = fname;
         this.confpassword = confpassword;
-    };
+    }
 
     /* return a promise with async / await */
     async save() {
@@ -31,7 +31,7 @@ class User {
         });
         saveUserListToFile(FILE_PATH, userList);
         return true;
-    };
+    }
 
     /* return a promise with classic promise syntax*/
     checkCredentials(email, password) {
@@ -46,20 +46,39 @@ class User {
             .compare(password, userFound.password)
             .then((match) => match)
             .catch((err) => err);
-    };
+    }
+
+    // Some example of bcrypt used with sync function
+    /*
+    save() {
+      let userList = getUserListFromFile(FILE_PATH);
+      const hashedPassword = bcrypt.hashSync(this.password, saltRounds);
+      userList.push({
+        username: this.email,
+        email: this.email,
+        password: hashedPassword,
+      });
+      saveUserListToFile(FILE_PATH, userList);
+    }
+    checkCredentials(email, password) {
+      if (!email || !password) return false;
+      let userFound = User.getUserFromList(email);
+      console.log("User::checkCredentials:", userFound, " password:", password);
+      if (!userFound) return false;
+      const match = bcrypt.compareSync(password, userFound.password);
+      return match;
+    }*/
 
     static get list() {
         let userList = getUserListFromFile(FILE_PATH);
         return userList;
-    };
+    }
 
     static isUser(username) {
         const userFound = User.getUserFromList(username);
         console.log("User::isUser:", userFound);
         return userFound !== undefined;
-    };
-
-
+    }
     static updateUser(old, newData) { // old = username ,, newData=fname,name,username
         console.log('dans le static updateUser de la class');
         let usersList = getUserListFromFile(FILE_PATH);
@@ -79,15 +98,13 @@ class User {
         return userUpdated;
     };
 
-
-
     static getUserFromList(username) {
         const userList = getUserListFromFile(FILE_PATH);
         for (let index = 0; index < userList.length; index++) {
             if (userList[index].username === username) return userList[index];
         }
         return;
-    };
+    }
     static deleteUserFromList(username) {
         let userList = getUserListFromFile(FILE_PATH);
         for (let index = 0; index < userList.length; index++) {
@@ -98,9 +115,9 @@ class User {
             }
         }
         return;
-    };
+    }
 
-};
+}
 
 function getUserListFromFile(filePath) {
     const fs = require("fs");
@@ -110,7 +127,7 @@ function getUserListFromFile(filePath) {
     if (userListRawData) userList = JSON.parse(userListRawData);
     else userList = [];
     return userList;
-};
+}
 
 function saveUserListToFile(filePath, userList) {
     const fs = require("fs");
@@ -118,6 +135,6 @@ function saveUserListToFile(filePath, userList) {
     data = JSON.stringify(data);
     fs.writeFileSync(filePath, data);
 
-};
+}
 
 module.exports = User;

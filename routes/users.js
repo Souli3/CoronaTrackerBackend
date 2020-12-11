@@ -40,7 +40,6 @@ router.patch("/", authorize, function(req, res) {
 
     return res.json(userUpdated);
 });
-
 /* POST a new user */
 router.post("/", function(req, res, next) {
     if (User.isUser(req.body.email))
@@ -60,8 +59,6 @@ router.post("/", function(req, res, next) {
         });
     });
 });
-
-
 // router.get("/:username",authorize ,function (req, res, next) {
 //   console.log('dans le get/'+req.params);
 //   const userFound = User.getUserFromList(req.params.username);
@@ -72,8 +69,9 @@ router.post("/", function(req, res, next) {
 //   }
 // });
 
-/* My Account - userObject with username*/
+/* My Account - getuserObject with username*/
 router.post("/useracc", authorize, function(req, res, next) {
+    console.log('dans le post userobj/' + req.body.username);
     const userFound = User.getUserFromList(req.body.username);
     const channelCount = Channel.mychannels(req.body.username).length;
 
