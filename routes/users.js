@@ -32,6 +32,14 @@ router.post("/login", function(req, res, next) {
         }
     })
 });
+/// update user 
+router.patch("/", authorize, function(req, res) {
+    const userUpdated = User.updateUser(req.body.username, req.body);
+
+    if (!userUpdated) return res.status(404).end();
+
+    return res.json(userUpdated);
+});
 
 /* POST a new user */
 router.post("/", function(req, res, next) {
@@ -52,6 +60,8 @@ router.post("/", function(req, res, next) {
         });
     });
 });
+
+
 // router.get("/:username",authorize ,function (req, res, next) {
 //   console.log('dans le get/'+req.params);
 //   const userFound = User.getUserFromList(req.params.username);
@@ -62,9 +72,8 @@ router.post("/", function(req, res, next) {
 //   }
 // });
 
-/* My Account - getuserObject with username*/
+/* My Account - userObject with username*/
 router.post("/useracc", authorize, function(req, res, next) {
-    console.log('dans le post userobj/' + req.body.username);
     const userFound = User.getUserFromList(req.body.username);
     const channelCount = Channel.mychannels(req.body.username).length;
 
