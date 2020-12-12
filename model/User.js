@@ -21,7 +21,7 @@ class User {
         const hashedPassword = await bcrypt.hash(this.password, saltRounds);
 
 
-        console.log("save:", this.email, this.name, this.fname);
+        //console.log("save:", this.email, this.name, this.fname);
         userList.push({
             username: this.email,
             email: this.email,
@@ -37,10 +37,10 @@ class User {
     checkCredentials(email, password) {
         if (!email || !password) return false;
         let userFound = User.getUserFromList(email);
-        console.log("User::checkCredentials:", userFound, " password:", password);
+        //console.log("User::checkCredentials:", userFound, " password:", password);
         if (!userFound) return Promise.resolve(false);
         //try {
-        console.log("checkCredentials:prior to await");
+        //console.log("checkCredentials:prior to await");
         // return the promise
         return bcrypt
             .compare(password, userFound.password)
@@ -76,11 +76,11 @@ class User {
 
     static isUser(username) {
         const userFound = User.getUserFromList(username);
-        console.log("User::isUser:", userFound);
+       // console.log("User::isUser:", userFound);
         return userFound !== undefined;
     }
     static updateUser(old, newData) { // old = username ,, newData=fname,name,username
-        console.log('dans le static updateUser de la class');
+        //console.log('dans le static updateUser de la class');
         let usersList = getUserListFromFile(FILE_PATH);
 
         if (!newData) return;
