@@ -21,7 +21,6 @@ app.use("/api/channel",channelRouter);
 
 app.use("/api/users", usersRouter);
 
-//app.use("/api/films", authorize, channelRouter);
 
 app.use("/api/cases", casesRouter);
 // catch 404 and forward to error handler
