@@ -42,11 +42,11 @@ router.patch("/", authorize, function(req, res) {
 });
 /* POST a new user */
 router.post("/", function(req, res, next) {
-    if (User.isUser(req.body.email))
+    if (User.isUser(req.body.pseudo, req.body.email))
         return res.status(409).end();
     if ((req.body.password !== req.body.confpassword))
         return res.status(408).end();
-    let newUser = new User(req.body.email, req.body.email, req.body.password, req.body.name, req.body.fname);
+    let newUser = new User(req.body.pseudo, req.body.email, req.body.password, req.body.name, req.body.fname);
     newUser.save().then(() => {
         //console.log("afterRegisterOp:", User.list);
         jwt.sign({ username: newUser.username }, jwtSecret, { expiresIn: LIFETIME_JWT }, (err, token) => {
