@@ -58,46 +58,59 @@ class User {
     return userFound !== undefined;
   }
   
-
-
-
   static getUserFromList(username ,email) {
     const userList = getUserListFromFile(FILE_PATH);
     for (let index = 0; index < userList.length; index++) {
       if (userList[index].username === username || userList[index].email === email) return userList[index];
-    }
-    return;
-  }
-  static deleteUserFromList(username) {
-    let userList = getUserListFromFile(FILE_PATH);
-    for (let index = 0; index < userList.length; index++) {
+    }}
+    
+    static updateUser(old, newData) { // old = username = mail ?? (a changer dans BD) 
+        console.log('dans le static updateUser de la class');
+        let usersList = getUserListFromFile(FILE_PATH);
 
-      if (userList[index].username === username) {
-        delete userList[index];
-      saveUserListToFile(FILE_PATH ,userList);
-      }
+        if (!newData) return;
+        let userUpdated;
+        for (let index = 0; index < usersList.length; index++) {
+            if (usersList[index].email === old) {
+                usersList[index].fname = escape(newData.fname);
+                usersList[index].name = escape(newData.name);
+                userUpdated = usersList[index];
+                break;
+            }
+        }
+
+        saveUserListToFile(FILE_PATH, usersList);
+        return userUpdated;
+    };
+    static deleteUserFromList(username) {
+        let userList = getUserListFromFile(FILE_PATH);
+        for (let index = 0; index < userList.length; index++) {
+
+            if (userList[index].username === username) {
+                delete userList[index];
+                saveUserListToFile(FILE_PATH, userList);
+            }
+        }
+        return;
     }
-    return;
-  }
 
 }
-
 function getUserListFromFile(filePath) {
-  const fs = require("fs");
-  if (!fs.existsSync(filePath)) return [];
-  let userListRawData = fs.readFileSync(filePath);
-  let userList;
-  if (userListRawData) userList = JSON.parse(userListRawData);
-  else userList = [];
-  return userList;
+    const fs = require("fs");
+    if (!fs.existsSync(filePath)) return [];
+    let userListRawData = fs.readFileSync(filePath);
+    let userList;
+    if (userListRawData) userList = JSON.parse(userListRawData);
+    else userList = [];
+    return userList;
 }
 
 function saveUserListToFile(filePath, userList) {
-  const fs = require("fs");
-  let data = userList.filter(element => { return element !== null});
-   data = JSON.stringify(data);
-  fs.writeFileSync(filePath, data);
-  
+    const fs = require("fs");
+    let data = userList.filter(element => { return element !== null });
+    data = JSON.stringify(data);
+    fs.writeFileSync(filePath, data);
+
 }
 
 module.exports = User;

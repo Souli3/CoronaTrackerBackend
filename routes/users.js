@@ -32,7 +32,14 @@ router.post("/login", function(req, res, next) {
         }
     })
 });
+/// update user 
+router.patch("/", authorize, function(req, res) {
+    const userUpdated = User.updateUser(req.body.username, req.body);
 
+    if (!userUpdated) return res.status(404).end();
+
+    return res.json(userUpdated);
+});
 /* POST a new user */
 router.post("/", function(req, res, next) {
     if (User.isUser(req.body.pseudo, req.body.email))

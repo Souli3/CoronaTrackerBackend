@@ -1,25 +1,25 @@
 // "use strict";
 var escape = require("escape-html");
 
-const FILE_PATH = __dirname +"/../data/channel.json";
+const FILE_PATH = __dirname + "/../data/channel.json";
 
-class Channel{
+class Channel {
 
 
 
-    constructor(data){
-        
+    constructor(data) {
+
         this.id = Channel.getNewId();
 
         this.title = escape(data.title);
 
         //this.date= data.date;
-        this.user=data.user;
-        this.state=data.state;
-        this.region=data.region;
-        this.subject =escape(data.subject);
-        this.messages=[];
-        
+        this.user = data.user;
+        this.state = data.state;
+        this.region = data.region;
+        this.subject = escape(data.subject);
+        this.messages = [];
+
         this.userId = "1";
 
 
@@ -29,49 +29,49 @@ class Channel{
         var month = currentTime.getMonth() + 1;
         var day = currentTime.getDate();
         var year = currentTime.getFullYear();
-        
-        this.date=year+"-"+month+"-"+day;
+
+        this.date = year + "-" + month + "-" + day;
     }
 
     static get list() {
-        
+
         let channels = getChannelListFromFile();
         console.log("er");
         return channels;
     }
-    static getMessages(id){
+    static getMessages(id) {
         let channelList = getChannelListFromFile();
         console.log("ere")
-        let messages=channelList.find((channel)=>(channel.id==id)).messages;
+        let messages = channelList.find((channel) => (channel.id == id)).messages;
         return messages;
     }
-    static saveMessage(idChannel,text,user){
+    static saveMessage(idChannel, text, user) {
         console.log("saving message");
         let channelList = getChannelListFromFile();
-         channelList.map((channel) =>{if( channel.id == idChannel)channel.messages.push({"message":text,"username":user})});
-         console.log("after");
-        saveChannelListToFile(FILE_PATH,channelList);
-             
-      /*   console.log(this.get(idChannel).messages)
-        (this.get(idChannel)).messages.push({message:text,user:user}) */
-        
+        channelList.map((channel) => { if (channel.id == idChannel) channel.messages.push({ "message": text, "username": user }) });
+        console.log("after");
+        saveChannelListToFile(FILE_PATH, channelList);
+
+        /*   console.log(this.get(idChannel).messages)
+          (this.get(idChannel)).messages.push({message:text,user:user}) */
+
     }
     static get(id) {
         let channelList = getChannelListFromFile();
         return channelList.find((channel) => channel.id == id);
     }
-    static search(titre, region){
+    static search(titre, region) {
         let channelList = getChannelListFromFile();
 
         let mychannels = [];
 
         for (let index = 0; index < channelList.length; index++) {
-            if(titre!="*" && channelList[index].region === region && channelList[index].title.match(titre)){
+            if (titre != "*" && channelList[index].region === region && channelList[index].title.match(titre)) {
                 mychannels.push(channelList[index]);
             }
 
-          
-            
+
+
         }
         return mychannels;
 
@@ -80,15 +80,15 @@ class Channel{
 
     }
 
-    save(){
+    save() {
 
         let channelList = getChannelListFromFile();
-        
+
         channelList.push(this);
         console.log(this.region);
-        updateRegion(this.region,"ouvert",false);
+        updateRegion(this.region, "ouvert", false);
         saveChannelListToFile(FILE_PATH, channelList);
-    
+
     }
     static mychannels(username) {
         console.log("mychannels::" + username);
@@ -111,28 +111,28 @@ class Channel{
         return channelList[channelList.length - 1].id + 1;
     }
 
-    static updateChannel(channel){
-        let list= getChannelListFromFile();
+    static updateChannel(channel) {
+        let list = getChannelListFromFile();
         list.map(element => {
-            if(element.id==channel.id){
-                element.subject=channel.sujet;
-                element.title=channel.title;
-                element.date=channel.date;
-                element.region=channel.region;
-                if("ferme"==channel.etat)
-                updateRegion(channel.region,"ferme",false)
-                element.state=channel.etat;
+            if (element.id == channel.id) {
+                element.subject = channel.sujet;
+                element.title = channel.title;
+                element.date = channel.date;
+                element.region = channel.region;
+                if ("ferme" == channel.etat)
+                    updateRegion(channel.region, "ferme", false)
+                element.state = channel.etat;
             }
         });
-        saveChannelListToFile(FILE_PATH,list);
+        saveChannelListToFile(FILE_PATH, list);
     }
-     
+
     static delete(id) {
         let channelList = getChannelListFromFile(FILE_PATH);
         const index = channelList.findIndex((channelList) => channelList.id == id);
         if (index < 0) return;
-        const itemRemoved = { ...channelList[index] };
-        updateRegion(itemRemoved.region,itemRemoved.state,true);
+        const itemRemoved = {...channelList[index] };
+        updateRegion(itemRemoved.region, itemRemoved.state, true);
         channelList.splice(index, 1);
         saveChannelListToFile(FILE_PATH, channelList);
 
@@ -140,34 +140,33 @@ class Channel{
         return itemRemoved;
     }
 }
-    
-function updateRegion(region,etat,del){
+
+function updateRegion(region, etat, del) {
     console.log("eSQSAVE");
-    let fs=require('fs');
-    
-        let file=fs.readFileSync(__dirname+'/../data/cases.json');
-        let data = JSON.parse(file).board;
-       
-        for (let index = 0; index < data.length ;index++) {
-            
-            if(data[index].region==region){
-                if(del){
-                    data[index][etat]--;
-                }
-             else if(etat==="ouvert"){
-                 data[index]["ouvert"]++;
+    let fs = require('fs');
+
+    let file = fs.readFileSync(__dirname + '/../data/cases.json');
+    let data = JSON.parse(file).board;
+
+    for (let index = 0; index < data.length; index++) {
+
+        if (data[index].region == region) {
+            if (del) {
+                data[index][etat]--;
+            } else if (etat === "ouvert") {
+                data[index]["ouvert"]++;
+            } else {
+                data[index]["ferme"]++;
+                data[index]["ouvert"]--;
             }
-            else {data[index]["ferme"]++;
-             data[index]["ouvert"]--;
-            }
-            }
-  }
-               
-  data=JSON.stringify(data).concat("}");
-  data="{\"board\":".concat(data);
-  fs.writeFileSync(__dirname+'/../data/cases.json',data)
+        }
+    }
+
+    data = JSON.stringify(data).concat("}");
+    data = "{\"board\":".concat(data);
+    fs.writeFileSync(__dirname + '/../data/cases.json', data)
 }
-   
+
 
 // function getChannelListFromFileById(username) {
 //     console.log('dans getchannellistfromfilebyid');

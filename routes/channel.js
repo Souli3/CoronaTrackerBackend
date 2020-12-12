@@ -19,18 +19,18 @@ router.post("/", function(req, res, next) {
 
 });
 
-router.post("/add",  function(req, res) {
+router.put("/add", authorize, function(req, res) {
     console.log("j'enregistre le nv channel");
     let newChannel = new Channel(req.body);
     newChannel.save();
     return res.json(newChannel);
 });
 
-router.get("/:titre/:region", function(req,res, next){
-  console.log("test "+req.params.titre+" "+req.params.region);
-  const channelSearch = Channel.search(req.params.titre,req.params.region);
-  if (!channelSearch) return res.status(404).end();
-  return res.json(channelSearch);
+router.get("/:titre/:region", function(req, res, next) {
+    console.log("test " + req.params.titre + " " + req.params.region);
+    const channelSearch = Channel.search(req.params.titre, req.params.region);
+    if (!channelSearch) return res.status(404).end();
+    return res.json(channelSearch);
 });
 
 
@@ -67,25 +67,25 @@ router.get("/:id", function(req, res, next) {
 // add Message
 router.post("/addMessage", authorize, function(req, res, next) {
     console.log("Send message " + req.body.message);
-    var idChannel=req.body.idChannel;
-    let message=req.body.message;
-    let user= req.body.user;
-    Channel.saveMessage(idChannel,message,user);
+    var idChannel = req.body.idChannel;
+    let message = req.body.message;
+    let user = req.body.user;
+    Channel.saveMessage(idChannel, message, user);
     console.log("he")
     console.log(Channel.getMessages(idChannel))
-   let  messages=Channel.getMessages(idChannel);
-   let owner=Channel.get(idChannel).user;
-   console.log(messages);
-    return res.json({messages,owner});
+    let messages = Channel.getMessages(idChannel);
+    let owner = Channel.get(idChannel).user;
+    console.log(messages);
+    return res.json({ messages, owner });
 
 });
 /// get Messages
 router.post("/allMessages", authorize, function(req, res, next) {
-    var idChannel=req.body.idChannel;
-   let  messages=Channel.getMessages(idChannel);
-   let owner=Channel.get(idChannel).user;
-   console.log(messages);
-    return res.json({messages,owner});
+    var idChannel = req.body.idChannel;
+    let messages = Channel.getMessages(idChannel);
+    let owner = Channel.get(idChannel).user;
+    console.log(messages);
+    return res.json({ messages, owner });
 
 });
 
