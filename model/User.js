@@ -6,8 +6,8 @@ const myPlaintextPassword = "145OkyayNo668Pass";
 const FILE_PATH = __dirname + "/../data/users.json";
 
 class User {
-  constructor(username, email, password ,name ,fname ,confpassword) {
-    this.username = username;
+  constructor(pseudo,email, password ,name ,fname ,confpassword) {
+    this.username = pseudo;
     this.email = email;
     this.password = password;
     this.name = name;
@@ -21,9 +21,9 @@ class User {
     const hashedPassword = await bcrypt.hash(this.password, saltRounds);
     
 
-    console.log("save:", this.email,this.name,this.fname );
+    console.log("save:", this.username,this.email,this.name,this.fname );
     userList.push({
-      username: this.email,
+      username: this.username,
       email: this.email,
       name:  this.name ,
       fname: this.fname ,
@@ -47,38 +47,13 @@ class User {
       .then((match) => match)
       .catch((err) => err);
   }
-
-  // Some example of bcrypt used with sync function
-  /*
-  save() {
-    let userList = getUserListFromFile(FILE_PATH);
-    const hashedPassword = bcrypt.hashSync(this.password, saltRounds);
-
-    userList.push({
-      username: this.email,
-      email: this.email,
-      password: hashedPassword,
-    });
-
-    saveUserListToFile(FILE_PATH, userList);
-  }
-
-  checkCredentials(email, password) {
-    if (!email || !password) return false;
-    let userFound = User.getUserFromList(email);
-    console.log("User::checkCredentials:", userFound, " password:", password);
-    if (!userFound) return false;
-    const match = bcrypt.compareSync(password, userFound.password);
-    return match;
-  }*/
-
   static get list() {
     let userList = getUserListFromFile(FILE_PATH);
     return userList;
   }
 
-  static isUser(username) {
-    const userFound = User.getUserFromList(username);
+  static isUser(username , email) {
+    const userFound = User.getUserFromList(username ,email);
     console.log("User::isUser:", userFound);
     return userFound !== undefined;
   }
@@ -86,10 +61,10 @@ class User {
 
 
 
-  static getUserFromList(username) {
+  static getUserFromList(username ,email) {
     const userList = getUserListFromFile(FILE_PATH);
     for (let index = 0; index < userList.length; index++) {
-      if (userList[index].username === username) return userList[index];
+      if (userList[index].username === username || userList[index].email === email) return userList[index];
     }
     return;
   }
