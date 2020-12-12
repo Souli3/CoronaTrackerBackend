@@ -15,19 +15,19 @@ router.get("/", authorize, function(req, res, next) {
 /* POST user data for authentication */
 router.post("/login", function(req, res, next) {
     let user = new User(req.body.email, req.body.email, req.body.password);
-    console.log("POST users/login:", User.list);
+    //console.log("POST users/login:", User.list);
     user.checkCredentials(req.body.email, req.body.password).then((match) => {
         if (match) {
             jwt.sign({ username: user.username }, jwtSecret, { expiresIn: LIFETIME_JWT }, (err, token) => {
                 if (err) {
-                    console.error("POST users/ :", err);
+                    //console.error("POST users/ :", err);
                     return res.status(500).send(err.message);
                 }
-                console.log("POST users/ token:", token);
+                //console.log("POST users/ token:", token);
                 return res.json({ username: user.username, token });
             });
         } else {
-            console.log("POST users/login Error:", "Unauthentified");
+            //console.log("POST users/login Error:", "Unauthentified");
             return res.status(401).send("bad email/password");
         }
     })
@@ -48,10 +48,10 @@ router.post("/", function(req, res, next) {
         return res.status(408).end();
     let newUser = new User(req.body.pseudo, req.body.email, req.body.password, req.body.name, req.body.fname);
     newUser.save().then(() => {
-        console.log("afterRegisterOp:", User.list);
+        //console.log("afterRegisterOp:", User.list);
         jwt.sign({ username: newUser.username }, jwtSecret, { expiresIn: LIFETIME_JWT }, (err, token) => {
             if (err) {
-                console.error("POST users/ :", err);
+                //console.error("POST users/ :", err);
                 return res.status(500).send(err.message);
             }
             console.log("POST users/ token:", token);
@@ -71,7 +71,7 @@ router.post("/", function(req, res, next) {
 
 /* My Account - getuserObject with username*/
 router.post("/useracc", authorize, function(req, res, next) {
-    console.log('dans le post userobj/' + req.body.username);
+    //console.log('dans le post userobj/' + req.body.username);
     const userFound = User.getUserFromList(req.body.username);
     const channelCount = Channel.mychannels(req.body.username).length;
 
@@ -90,7 +90,7 @@ router.post("/useracc", authorize, function(req, res, next) {
 router.delete("/delete", authorize, function(req, res, next) {
 
     User.deleteUserFromList(req.body.username);
-    console.log(User.list());
+    //console.log(User.list());
 
     return res.json(req.body.username);
 });

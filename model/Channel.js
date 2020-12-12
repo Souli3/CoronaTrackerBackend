@@ -36,20 +36,20 @@ class Channel {
     static get list() {
 
         let channels = getChannelListFromFile();
-        console.log("er");
+       // console.log("er");
         return channels;
     }
     static getMessages(id) {
         let channelList = getChannelListFromFile();
-        console.log("ere")
+       // console.log("ere")
         let messages = channelList.find((channel) => (channel.id == id)).messages;
         return messages;
     }
     static saveMessage(idChannel, text, user) {
-        console.log("saving message");
+        //console.log("saving message");
         let channelList = getChannelListFromFile();
         channelList.map((channel) => { if (channel.id == idChannel) channel.messages.push({ "message": text, "username": user }) });
-        console.log("after");
+        //console.log("after");
         saveChannelListToFile(FILE_PATH, channelList);
 
         /*   console.log(this.get(idChannel).messages)
@@ -68,6 +68,13 @@ class Channel {
         for (let index = 0; index < channelList.length; index++) {
             if (titre != "*" && channelList[index].region === region && channelList[index].title.match(titre)) {
                 mychannels.push(channelList[index]);
+            }else if(titre == "*" && channelList[index].region === region){
+                mychannels.push(channelList[index]);
+            }else if(titre =="*" && region =="*"){
+                
+                mychannels.push(channelList[index]);
+            }else if(titre != "*" && region=="*" && channelList[index].title.match(titre)){
+                mychannels.push(channelList[index]);
             }
 
 
@@ -85,13 +92,13 @@ class Channel {
         let channelList = getChannelListFromFile();
 
         channelList.push(this);
-        console.log(this.region);
+        //console.log(this.region);
         updateRegion(this.region, "ouvert", false);
         saveChannelListToFile(FILE_PATH, channelList);
 
     }
     static mychannels(username) {
-        console.log("mychannels::" + username);
+        //console.log("mychannels::" + username);
         let channelList = getChannelListFromFile();
         // console.log("channellist" + channelList);
 
@@ -102,7 +109,7 @@ class Channel {
                 mychannels.push(channelList[index]);
             }
         }
-        console.log("mychannels" + mychannels);
+        //console.log("mychannels" + mychannels);
         return mychannels;
     }
     static getNewId() {
@@ -136,13 +143,13 @@ class Channel {
         channelList.splice(index, 1);
         saveChannelListToFile(FILE_PATH, channelList);
 
-        console.log("bien supprimeeeeeeeeeeeeee");
+        //console.log("bien supprimeeeeeeeeeeeeee");
         return itemRemoved;
     }
 }
 
 function updateRegion(region, etat, del) {
-    console.log("eSQSAVE");
+    //console.log("eSQSAVE");
     let fs = require('fs');
 
     let file = fs.readFileSync(__dirname + '/../data/cases.json');
@@ -189,14 +196,14 @@ function updateRegion(region, etat, del) {
 
 function getChannelListFromFile() {
     const fs = require("fs");
-    console.log("p1");
+    //console.log("p1");
 
     if (!fs.existsSync(FILE_PATH)) return [];
     let channelRawData = fs.readFileSync(FILE_PATH);
     let channelList;
     if (channelRawData) channelList = JSON.parse(channelRawData);
     else channelList = [];
-    console.log("p2");
+    //console.log("p2");
     return channelList;
 }
 

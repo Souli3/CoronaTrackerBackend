@@ -7,7 +7,7 @@ var logger = require("morgan");
 var usersRouter = require("./routes/users");
 
 var casesRouter = require("./routes/cases");
-
+var regionRouter = require("./routes/region");
 var channelRouter = require("./routes/channel");
 const { authorize } = require("./utils/auth");
 
@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/channel",channelRouter);
 
 app.use("/api/users", usersRouter);
+app.use("/api/region",regionRouter);
 
 
 app.use("/api/cases", casesRouter);
