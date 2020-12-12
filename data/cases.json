@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"board":[{"region":"Bruxelles","ouvert":7,"ferme":0},{"region":"Mons","ouvert":2,"ferme":0},{"region":"Liege","ouvert":5,"ferme":0},{"region":"Namur","ouvert":0,"ferme":0},{"region":"Anvers","ouvert":3,"ferme":2},{"region":"Gand","ouvert":1,"ferme":0}]}
-=======
 {"board":[{"region":"Bruxelles","ouvert":6,"ferme":0},{"region":"Mons","ouvert":1,"ferme":0},{"region":"Liege","ouvert":1,"ferme":0},{"region":"Namur","ouvert":0,"ferme":0},{"region":"Anvers","ouvert":1,"ferme":2},{"region":"Gand","ouvert":1,"ferme":0}]}
->>>>>>> c7537adb2777208afdc9344dad2eba1e50342513
