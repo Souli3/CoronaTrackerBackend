@@ -61,8 +61,8 @@ router.get("/:id", function(req, res, next) {
     return res.json({ channel });
 });
 // add Message
-router.put("/addMessage", authorize, function(req, res, next) {
-    console.log("Send message " + req.body.message);
+router.post("/addMessage", authorize, function(req, res, next) {
+    //console.log("Send message " + req.body.message);
     var idChannel = req.body.idChannel;
     let message = req.body.message;
     let user = req.body.user;
