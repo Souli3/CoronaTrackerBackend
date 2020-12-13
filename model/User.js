@@ -36,12 +36,13 @@ class User {
   /* return a promise with classic promise syntax*/
   checkCredentials(email, password) {
     if (!email || !password) return false;
-    let userFound = User.getUserFromList(email);
+    let userFound = User.getUserFromList("",email);
     console.log("User::checkCredentials:", userFound, " password:", password);
     if (!userFound) return Promise.resolve(false);
     //try {
     console.log("checkCredentials:prior to await");
     // return the promise
+    this.username=userFound.username;
     return bcrypt
       .compare(password, userFound.password)
       .then((match) => match)
@@ -64,24 +65,24 @@ class User {
       if (userList[index].username === username || userList[index].email === email) return userList[index];
     }}
     
-    static updateUser(old, newData) { // old = username = mail ?? (a changer dans BD) 
-        console.log('dans le static updateUser de la class');
-        let usersList = getUserListFromFile(FILE_PATH);
+    static updateUser(old, newData) { // fonctionnalite future : changer username 
+      console.log('dans le static updateUser de la class');
+      let usersList = getUserListFromFile(FILE_PATH);
 
-        if (!newData) return;
-        let userUpdated;
-        for (let index = 0; index < usersList.length; index++) {
-            if (usersList[index].email === old) {
-                usersList[index].fname = escape(newData.fname);
-                usersList[index].name = escape(newData.name);
-                userUpdated = usersList[index];
-                break;
-            }
-        }
+      if (!newData) return;
+      let userUpdated;
+      for (let index = 0; index < usersList.length; index++) {
+          if (usersList[index].username === old) {
+              usersList[index].fname = escape(newData.fname);
+              usersList[index].name = escape(newData.name);
+              userUpdated = usersList[index];
+              break;
+          }
+      }
 
-        saveUserListToFile(FILE_PATH, usersList);
-        return userUpdated;
-    };
+      saveUserListToFile(FILE_PATH, usersList);
+      return userUpdated;
+  };
     static deleteUserFromList(username) {
         let userList = getUserListFromFile(FILE_PATH);
         for (let index = 0; index < userList.length; index++) {
