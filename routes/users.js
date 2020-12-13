@@ -54,7 +54,7 @@ router.post("/", function(req, res, next) {
                 //console.error("POST users/ :", err);
                 return res.status(500).send(err.message);
             }
-            //console.log("POST users/ token:", token);
+            console.log("POST users/ token:", token);
             return res.json({ username: newUser.username, token });
         });
     });
@@ -76,9 +76,8 @@ router.post("/useracc", authorize, function(req, res, next) {
     const channelCount = Channel.mychannels(req.body.username).length;
 
     const useracc = [userFound, channelCount];
-
     if (userFound) {
-        return res.send({ user: useracc });;
+        return res.send({ user: useracc });
     } else {
         return res.status(404).send("ressource not found");
     }
